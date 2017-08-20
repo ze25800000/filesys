@@ -7,6 +7,16 @@
 <link rel="stylesheet" href="css/bootstrap.css">
 <script src="js/bootstrap.js"></script>
 <body>
+<?php
+date_default_timezone_set('PRC');
+require_once "lib/dir.func.php";
+define('WEBROOT', 'webRoot');
+$info = read_directory(WEBROOT);
+if (!is_array($info)) {
+    exit('读取失败');
+}
+print_r($info);
+?>
 <div class="container">
     <div class="row clearfix">
         <div class="col-md-12 column">
