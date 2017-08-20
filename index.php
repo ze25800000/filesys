@@ -15,7 +15,6 @@ $info = read_directory(WEBROOT);
 if (!is_array($info)) {
     exit('读取失败');
 }
-print_r($info);
 ?>
 <div class="container">
     <div class="row clearfix">
@@ -83,8 +82,70 @@ print_r($info);
                 </tr>
                 </thead>
                 <tbody>
+                <!--目录部分-->
+                <?php
+                if (is_array($info['dir'])) {
+                    foreach ($info['dir'] as $val) {
+                        ?>
+                        <tr class="success">
+                            <td><span class="glyphicon glyphicon-folder-close"></span>目录</td>
+                            <td><?php echo $val['showName'] ?></td>
+                            <td>
+                                <span class="glyphicon <?php echo $val['readable'] ? 'glyphicon-ok' : 'glyphicon-remove' ?>"
+                                      aria-hidden="true"></span>
+                            </td>
+                            <td>
+                                <span class="glyphicon <?php echo $val['writable'] ? 'glyphicon-ok' : 'glyphicon-remove' ?>"
+                                      aria-hidden="true"></span>
+                            </td>
+                            <td><?php echo $val['atime'] ?></td>
 
+                            <td>
+                                <a href="#" name="button"
+                                   class="btn btn-primary btn-sm">打开</a>
+                                <a href="#" name="button" class="btn btn-primary btn-sm">重命名</a>
+                                <a href="#" name="button" class="btn btn-primary btn-sm">剪切</a>
+                                <a href="#" name="button" class="btn btn-primary btn-sm">复制</a>
+                                <a href="#" name="button" class="btn btn-danger btn-sm">删除</a>
+                            </td>
+                        </tr>
+                        <?php
+                    }
+                }
+                ?>
+                <!--文件部分-->
+                <?php
+                if (is_array($info['file'])) {
+                    foreach ($info['file'] as $val) {
+                        ?>
+                        <tr class="warning">
+                            <td><span class="glyphicon glyphicon-file"></span>文件</td>
+                            <td><?php echo $val['showName'] ?></td>
+                            <td>
+                                <span class="glyphicon <?php echo $val['readable'] ? 'glyphicon-ok' : 'glyphicon-remove' ?>"
+                                      aria-hidden="true"></span>
+                            </td>
+                            <td>
+                                <span class="glyphicon <?php echo $val['writable'] ? 'glyphicon-ok' : 'glyphicon-remove' ?>"
+                                      aria-hidden="true"></span>
+                            </td>
+                            <td><?php echo $val['atime'] ?></td>
+                            <td>
+                                <a href="#" name="button" class="btn btn-primary btn-sm">打开</a>
+                                <a href="#" name="button" class="btn btn-primary btn-sm">重命名</a>
+                                <a href="#" name="button" class="btn btn-primary btn-sm">编辑</a>
+                                <a href="#" name="button" class="btn btn-primary btn-sm">下载</a>
+                                <a href="#" name="button" class="btn btn-primary btn-sm">剪切</a>
+                                <a href="#" name="button" class="btn btn-primary btn-sm">复制</a>
+                                <a href="#" name="button" class="btn btn-danger btn-sm">删除</a>
+                            </td>
+                        </tr>
+                        <?php
+                    }
+                }
+                ?>
                 </tbody>
+
             </table>
 
 
