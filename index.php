@@ -11,9 +11,13 @@
 date_default_timezone_set('PRC');
 require_once "lib/dir.func.php";
 define('WEBROOT', 'webRoot');
-$info = read_directory(WEBROOT);
+$path = $_REQUEST['path'] ? $_REQUEST['path'] : WEBROOT;
+$info = read_directory($path);
 if (!is_array($info)) {
-    exit('读取失败');
+    exit("<script>
+alert('读取失败，没有内容')
+location.href='index.php';
+</script>");
 }
 ?>
 <div class="container">
@@ -101,7 +105,7 @@ if (!is_array($info)) {
                             <td><?php echo $val['atime'] ?></td>
 
                             <td>
-                                <a href="#" name="button"
+                                <a href="index.php?path=<?php echo $val['fileName'] ?>" name="button"
                                    class="btn btn-primary btn-sm">打开</a>
                                 <a href="#" name="button" class="btn btn-primary btn-sm">重命名</a>
                                 <a href="#" name="button" class="btn btn-primary btn-sm">剪切</a>
