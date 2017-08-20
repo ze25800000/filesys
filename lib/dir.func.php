@@ -28,3 +28,17 @@ function read_directory($path) {
     closedir($handle);
     return $arr;
 }
+
+/**创建目录
+ * @param $path 目录名称
+ * @return bool|string
+ */
+function create_dir($path) {
+    if (is_dir($path)) {
+        return $path . '当前目录已存在重名目录';
+    }
+    if (!mkdir($path, true)) {
+        return $path . '目录创建失败';
+    }
+    return true;
+}

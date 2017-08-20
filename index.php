@@ -1,3 +1,32 @@
+<?php
+date_default_timezone_set('PRC');
+require_once "lib/dir.func.php";
+define('WEBROOT', 'webRoot');
+$path    = $_REQUEST['path'] ? $_REQUEST['path'] : WEBROOT;
+$act     = $_REQUEST['act'] ? $_REQUEST['act'] : '';
+$dirName = $_REQUEST['dirName'] ? $_REQUEST['dirName'] : '';
+$info    = read_directory($path);
+if (!is_array($info)) {
+    exit("<script>
+alert('读取失败，没有内容')
+location.href='index.php';
+</script>");
+}
+//根据不同请求完成不同操作
+switch ($act) {
+    case 'createDir':
+        $res = create_dir($path . DIRECTORY_SEPARATOR . $dirName);
+        if ($res === true) {
+            $result['msg']  = $dirName . '创建成功';
+            $result['icon'] = 1;
+        } else {
+            $result['msg']  = $res;
+            $result['icon'] = 2;
+        }
+        exit(json_encode($result));
+        break;
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,21 +34,7 @@
     <title>WEB在线文件管理系统</title>
 </head>
 <link rel="stylesheet" href="css/bootstrap.css">
-<script src="js/bootstrap.js"></script>
 <body>
-<?php
-date_default_timezone_set('PRC');
-require_once "lib/dir.func.php";
-define('WEBROOT', 'webRoot');
-$path = $_REQUEST['path'] ? $_REQUEST['path'] : WEBROOT;
-$info = read_directory($path);
-if (!is_array($info)) {
-    exit("<script>
-alert('读取失败，没有内容')
-location.href='index.php';
-</script>");
-}
-?>
 <div class="container">
     <div class="row clearfix">
         <div class="col-md-12 column">
@@ -36,7 +51,9 @@ location.href='index.php';
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
                         <li class="active">
-                            <a href="#"><span class="glyphicon glyphicon-folder-open"></span>新建目录</a>
+                            <a href="javascript:void(0)" class="createDir"
+                               data-url="index.php?act=createDir&path=<?php echo $path; ?>"><span
+                                        class="glyphicon glyphicon-folder-open"></span>新建目录</a>
                         </li>
                         <li>
                             <a href="#"><span class="glyphicon glyphicon-file"></span>新建文件</a>
@@ -157,5 +174,10 @@ location.href='index.php';
     </div>
 </div>
 </body>
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script src="js/bootstrap.js"></script>
+<script src="layer/layer.js"></script>
+<script src="js/dir.js"></script>
+<script src="js/file.js"></script>
 
 </html>
